@@ -12,7 +12,7 @@ use gpui::{
 use settings::{Settings, SettingsStore};
 use std::sync::Arc;
 use ui::{prelude::*, CheckboxWithLabel};
-use vim::VimModeSetting;
+// use vim::VimModeSetting;
 use workspace::{
     dock::DockPosition,
     item::{Item, ItemEvent, TabContentParams},
@@ -155,24 +155,24 @@ impl Render for WelcomePage {
                             .border_1()
                             .border_color(cx.theme().colors().border)
                             .rounded_md()
-                            .child(CheckboxWithLabel::new(
-                                "enable-vim",
-                                Label::new("Enable vim mode"),
-                                if VimModeSetting::get_global(cx).0 {
-                                    ui::Selection::Selected
-                                } else {
-                                    ui::Selection::Unselected
-                                },
-                                cx.listener(move |this, selection, cx| {
-                                    this.telemetry
-                                        .report_app_event("welcome page: toggle vim".to_string());
-                                    this.update_settings::<VimModeSetting>(
-                                        selection,
-                                        cx,
-                                        |setting, value| *setting = Some(value),
-                                    );
-                                }),
-                            ))
+                            // .child(CheckboxWithLabel::new(
+                            //     "enable-vim",
+                            //     Label::new("Enable vim mode"),
+                            //     if VimModeSetting::get_global(cx).0 {
+                            //         ui::Selection::Selected
+                            //     } else {
+                            //         ui::Selection::Unselected
+                            //     },
+                            //     cx.listener(move |this, selection, cx| {
+                            //         this.telemetry
+                            //             .report_app_event("welcome page: toggle vim".to_string());
+                            //         this.update_settings::<VimModeSetting>(
+                            //             selection,
+                            //             cx,
+                            //             |setting, value| *setting = Some(value),
+                            //         );
+                            //     }),
+                            // ))
                             .child(CheckboxWithLabel::new(
                                 "enable-telemetry",
                                 Label::new("Send anonymous usage data"),

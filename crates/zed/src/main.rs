@@ -11,7 +11,7 @@ use chrono::Utc;
 use clap::{command, Parser};
 use cli::FORCE_CLI_MODE_ENV_VAR_NAME;
 use client::{parse_zed_link, telemetry::Telemetry, Client, DevServerToken, UserStore};
-use collab_ui::channel_view::ChannelView;
+// use collab_ui::channel_view::ChannelView;
 use copilot::Copilot;
 use copilot_ui::CopilotCompletionProvider;
 use db::kvp::KEY_VALUE_STORE;
@@ -275,7 +275,7 @@ fn init_ui(args: Args) {
             node_runtime.clone(),
             cx,
         );
-        assistant::init(client.clone(), cx);
+        // assistant::init(client.clone(), cx);
         init_inline_completion_provider(client.telemetry().clone(), cx);
 
         extension::init(
@@ -356,17 +356,17 @@ fn init_ui(args: Args) {
         project_symbols::init(cx);
         project_panel::init(Assets, cx);
         tasks_ui::init(cx);
-        channel::init(&client, user_store.clone(), cx);
+        // channel::init(&client, user_store.clone(), cx);
         search::init(cx);
-        vim::init(cx);
+        // vim::init(cx);
         terminal_view::init(cx);
 
         journal::init(app_state.clone(), cx);
         language_selector::init(cx);
         theme_selector::init(cx);
         language_tools::init(cx);
-        call::init(app_state.client.clone(), app_state.user_store.clone(), cx);
-        notifications::init(app_state.client.clone(), app_state.user_store.clone(), cx);
+        // call::init(app_state.client.clone(), app_state.user_store.clone(), cx);
+        // notifications::init(app_state.client.clone(), app_state.user_store.clone(), cx);
         collab_ui::init(&app_state, cx);
         feedback::init(cx);
         markdown_preview::init(cx);
@@ -471,55 +471,57 @@ fn handle_open_request(
         }));
     }
 
-    if !request.open_channel_notes.is_empty() || request.join_channel.is_some() {
-        cx.spawn(|mut cx| async move {
-            if let Some(task) = task {
-                task.await?;
-            }
-            let client = app_state.client.clone();
-            // we continue even if authentication fails as join_channel/ open channel notes will
-            // show a visible error message.
-            authenticate(client, &cx).await.log_err();
+    // if !request.open_channel_notes.is_empty() || request.join_channel.is_some() {
+    //     cx.spawn(|mut cx| async move {
+    //         if let Some(task) = task {
+    //             task.await?;
+    //         }
+    //         let client = app_state.client.clone();
+    //         // we continue even if authentication fails as join_channel/ open channel notes will
+    //         // show a visible error message.
+    //         authenticate(client, &cx).await.log_err();
 
-            if let Some(channel_id) = request.join_channel {
-                cx.update(|cx| {
-                    workspace::join_channel(
-                        client::ChannelId(channel_id),
-                        app_state.clone(),
-                        None,
-                        cx,
-                    )
-                })?
-                .await?;
-            }
+    //         if let Some(channel_id) = request.join_channel {
+    //             cx.update(|cx| {
+    //                 workspace::join_channel(
+    //                     client::ChannelId(channel_id),
+    //                     app_state.clone(),
+    //                     None,
+    //                     cx,
+    //                 )
+    //             })?
+    //             .await?;
+    //         }
 
-            let workspace_window =
-                workspace::get_any_active_workspace(app_state, cx.clone()).await?;
-            let workspace = workspace_window.root_view(&cx)?;
+    //         let workspace_window =
+    //             workspace::get_any_active_workspace(app_state, cx.clone()).await?;
+    //         let workspace = workspace_window.root_view(&cx)?;
 
-            let mut promises = Vec::new();
-            for (channel_id, heading) in request.open_channel_notes {
-                promises.push(cx.update_window(workspace_window.into(), |_, cx| {
-                    ChannelView::open(
-                        client::ChannelId(channel_id),
-                        heading,
-                        workspace.clone(),
-                        cx,
-                    )
-                    .log_err()
-                })?)
-            }
-            future::join_all(promises).await;
-            anyhow::Ok(())
-        })
-        .detach_and_log_err(cx);
-        true
-    } else {
-        if let Some(task) = task {
-            task.detach_and_log_err(cx)
-        }
-        false
+    //         let mut promises = Vec::new();
+    //         for (channel_id, heading) in request.open_channel_notes {
+    //             promises.push(cx.update_window(workspace_window.into(), |_, cx| {
+    //                 ChannelView::open(
+    //                     client::ChannelId(channel_id),
+    //                     heading,
+    //                     workspace.clone(),
+    //                     cx,
+    //                 )
+    //                 .log_err()
+    //             })?)
+    //         }
+    //         future::join_all(promises).await;
+    //         anyhow::Ok(())
+    //     })
+    //     .detach_and_log_err(cx);
+    //     true
+    // } else {
+
+    // }
+
+    if let Some(task) = task {
+        task.detach_and_log_err(cx)
     }
+    false
 }
 
 async fn authenticate(client: Arc<Client>, cx: &AsyncAppContext) -> Result<()> {

@@ -3,7 +3,7 @@ mod only_instance;
 mod open_listener;
 
 pub use app_menus::*;
-use assistant::AssistantPanel;
+// use assistant::AssistantPanel;
 use breadcrumbs::Breadcrumbs;
 use client::ZED_URL_SCHEME;
 use collections::VecDeque;
@@ -40,7 +40,7 @@ use util::{
     ResultExt,
 };
 use uuid::Uuid;
-use vim::VimModeSetting;
+// use vim::VimModeSetting;
 use welcome::BaseKeymap;
 use workspace::{
     create_and_open_local_file, notifications::simple_message_notification::MessageNotification,
@@ -134,7 +134,7 @@ pub fn initialize_workspace(app_state: Arc<AppState>, cx: &mut AppContext) {
         let tasks_indicator = tasks_ui::TaskStatusIndicator::new(workspace.weak_handle(), cx);
         let active_buffer_language =
             cx.new_view(|_| language_selector::ActiveBufferLanguage::new(workspace));
-        let vim_mode_indicator = cx.new_view(|cx| vim::ModeIndicator::new(cx));
+        // let vim_mode_indicator = cx.new_view(|cx| vim::ModeIndicator::new(cx));
         let cursor_position =
             cx.new_view(|_| go_to_line::cursor_position::CursorPosition::new(workspace));
         workspace.status_bar().update(cx, |status_bar, cx| {
@@ -143,7 +143,7 @@ pub fn initialize_workspace(app_state: Arc<AppState>, cx: &mut AppContext) {
             status_bar.add_right_item(copilot, cx);
             status_bar.add_right_item(tasks_indicator, cx);
             status_bar.add_right_item(active_buffer_language, cx);
-            status_bar.add_right_item(vim_mode_indicator, cx);
+            // status_bar.add_right_item(vim_mode_indicator, cx);
             status_bar.add_right_item(cursor_position, cx);
         });
 
@@ -186,38 +186,38 @@ pub fn initialize_workspace(app_state: Arc<AppState>, cx: &mut AppContext) {
         cx.spawn(|workspace_handle, mut cx| async move {
             let project_panel = ProjectPanel::load(workspace_handle.clone(), cx.clone());
             let terminal_panel = TerminalPanel::load(workspace_handle.clone(), cx.clone());
-            let assistant_panel = AssistantPanel::load(workspace_handle.clone(), cx.clone());
-            let channels_panel =
-                collab_ui::collab_panel::CollabPanel::load(workspace_handle.clone(), cx.clone());
-            let chat_panel =
-                collab_ui::chat_panel::ChatPanel::load(workspace_handle.clone(), cx.clone());
-            let notification_panel = collab_ui::notification_panel::NotificationPanel::load(
-                workspace_handle.clone(),
-                cx.clone(),
-            );
+            // let assistant_panel = AssistantPanel::load(workspace_handle.clone(), cx.clone());
+            // let channels_panel =
+            //     collab_ui::collab_panel::CollabPanel::load(workspace_handle.clone(), cx.clone());
+            // let chat_panel =
+            //     collab_ui::chat_panel::ChatPanel::load(workspace_handle.clone(), cx.clone());
+            // let notification_panel = collab_ui::notification_panel::NotificationPanel::load(
+            //     workspace_handle.clone(),
+            //     cx.clone(),
+            // );
             let (
                 project_panel,
                 terminal_panel,
-                assistant_panel,
-                channels_panel,
-                chat_panel,
-                notification_panel,
+                // assistant_panel,
+                // channels_panel,
+                // chat_panel,
+                // notification_panel,
             ) = futures::try_join!(
                 project_panel,
                 terminal_panel,
-                assistant_panel,
-                channels_panel,
-                chat_panel,
-                notification_panel,
+                // assistant_panel,
+                // channels_panel,
+                // chat_panel,
+                // notification_panel,
             )?;
 
             workspace_handle.update(&mut cx, |workspace, cx| {
                 workspace.add_panel(project_panel, cx);
                 workspace.add_panel(terminal_panel, cx);
-                workspace.add_panel(assistant_panel, cx);
-                workspace.add_panel(channels_panel, cx);
-                workspace.add_panel(chat_panel, cx);
-                workspace.add_panel(notification_panel, cx);
+                // workspace.add_panel(assistant_panel, cx);
+                // workspace.add_panel(channels_panel, cx);
+                // workspace.add_panel(chat_panel, cx);
+                // workspace.add_panel(notification_panel, cx);
                 cx.focus_self();
             })
         })
@@ -372,28 +372,28 @@ pub fn initialize_workspace(app_state: Arc<AppState>, cx: &mut AppContext) {
                     workspace.toggle_panel_focus::<ProjectPanel>(cx);
                 },
             )
-            .register_action(
-                |workspace: &mut Workspace,
-                 _: &collab_ui::collab_panel::ToggleFocus,
-                 cx: &mut ViewContext<Workspace>| {
-                    workspace.toggle_panel_focus::<collab_ui::collab_panel::CollabPanel>(cx);
-                },
-            )
-            .register_action(
-                |workspace: &mut Workspace,
-                 _: &collab_ui::chat_panel::ToggleFocus,
-                 cx: &mut ViewContext<Workspace>| {
-                    workspace.toggle_panel_focus::<collab_ui::chat_panel::ChatPanel>(cx);
-                },
-            )
-            .register_action(
-                |workspace: &mut Workspace,
-                 _: &collab_ui::notification_panel::ToggleFocus,
-                 cx: &mut ViewContext<Workspace>| {
-                    workspace
-                        .toggle_panel_focus::<collab_ui::notification_panel::NotificationPanel>(cx);
-                },
-            )
+            // .register_action(
+            //     |workspace: &mut Workspace,
+            //      _: &collab_ui::collab_panel::ToggleFocus,
+            //      cx: &mut ViewContext<Workspace>| {
+            //         workspace.toggle_panel_focus::<collab_ui::collab_panel::CollabPanel>(cx);
+            //     },
+            // )
+            // .register_action(
+            //     |workspace: &mut Workspace,
+            //      _: &collab_ui::chat_panel::ToggleFocus,
+            //      cx: &mut ViewContext<Workspace>| {
+            //         workspace.toggle_panel_focus::<collab_ui::chat_panel::ChatPanel>(cx);
+            //     },
+            // )
+            // .register_action(
+            //     |workspace: &mut Workspace,
+            //      _: &collab_ui::notification_panel::ToggleFocus,
+            //      cx: &mut ViewContext<Workspace>| {
+            //         workspace
+            //             .toggle_panel_focus::<collab_ui::notification_panel::NotificationPanel>(cx);
+            //     },
+            // )
             .register_action(
                 |workspace: &mut Workspace,
                  _: &terminal_panel::ToggleFocus,
@@ -607,18 +607,18 @@ pub fn handle_keymap_file_changes(
     cx: &mut AppContext,
 ) {
     BaseKeymap::register(cx);
-    VimModeSetting::register(cx);
+    // VimModeSetting::register(cx);
 
     let (base_keymap_tx, mut base_keymap_rx) = mpsc::unbounded();
     let mut old_base_keymap = *BaseKeymap::get_global(cx);
-    let mut old_vim_enabled = VimModeSetting::get_global(cx).0;
+    // let mut old_vim_enabled = VimModeSetting::get_global(cx).0;
     cx.observe_global::<SettingsStore>(move |cx| {
         let new_base_keymap = *BaseKeymap::get_global(cx);
-        let new_vim_enabled = VimModeSetting::get_global(cx).0;
+        // let new_vim_enabled = VimModeSetting::get_global(cx).0;
 
-        if new_base_keymap != old_base_keymap || new_vim_enabled != old_vim_enabled {
-            old_base_keymap = new_base_keymap;
-            old_vim_enabled = new_vim_enabled;
+        if new_base_keymap != old_base_keymap {
+            // old_base_keymap = new_base_keymap;
+            // old_vim_enabled = new_vim_enabled;
             base_keymap_tx.unbounded_send(()).unwrap();
         }
     })
@@ -661,9 +661,9 @@ pub fn load_default_keymap(cx: &mut AppContext) {
     }
 
     KeymapFile::load_asset(DEFAULT_KEYMAP_PATH, cx).unwrap();
-    if VimModeSetting::get_global(cx).0 {
-        KeymapFile::load_asset("keymaps/vim.json", cx).unwrap();
-    }
+    // if VimModeSetting::get_global(cx).0 {
+    //     KeymapFile::load_asset("keymaps/vim.json", cx).unwrap();
+    // }
 
     if let Some(asset_path) = base_keymap.asset_path() {
         KeymapFile::load_asset(asset_path, cx).unwrap();
@@ -3078,19 +3078,19 @@ mod tests {
             state.build_window_options = build_window_options;
             theme::init(theme::LoadThemes::JustBase, cx);
             audio::init((), cx);
-            channel::init(&app_state.client, app_state.user_store.clone(), cx);
-            call::init(app_state.client.clone(), app_state.user_store.clone(), cx);
-            notifications::init(app_state.client.clone(), app_state.user_store.clone(), cx);
+            // channel::init(&app_state.client, app_state.user_store.clone(), cx);
+            // call::init(app_state.client.clone(), app_state.user_store.clone(), cx);
+            // notifications::init(app_state.client.clone(), app_state.user_store.clone(), cx);
             workspace::init(app_state.clone(), cx);
             Project::init_settings(cx);
             command_palette::init(cx);
             language::init(cx);
             editor::init(cx);
             project_panel::init_settings(cx);
-            collab_ui::init(&app_state, cx);
+            // collab_ui::init(&app_state, cx);
             project_panel::init((), cx);
             terminal_view::init(cx);
-            assistant::init(app_state.client.clone(), cx);
+            // assistant::init(app_state.client.clone(), cx);
             tasks_ui::init(cx);
             initialize_workspace(app_state.clone(), cx);
             app_state

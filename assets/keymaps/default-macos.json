@@ -182,8 +182,7 @@
         {
           "focus": false
         }
-      ],
-      "cmd->": "assistant::QuoteSelection"
+      ]
     }
   },
   {
@@ -206,23 +205,6 @@
       "ctrl-enter": "editor::Newline",
       "shift-enter": "editor::Newline",
       "ctrl-shift-enter": "editor::NewlineBelow"
-    }
-  },
-  {
-    "context": "AssistantPanel",
-    "bindings": {
-      "cmd-g": "search::SelectNextMatch",
-      "cmd-shift-g": "search::SelectPrevMatch"
-    }
-  },
-  {
-    "context": "ConversationEditor > Editor",
-    "bindings": {
-      "cmd-enter": "assistant::Assist",
-      "cmd-s": "workspace::Save",
-      "cmd->": "assistant::QuoteSelection",
-      "shift-enter": "assistant::Split",
-      "ctrl-r": "assistant::CycleMessageRole"
     }
   },
   {
@@ -414,7 +396,7 @@
       //     }
       // ]
       "alt-cmd-o": "projects::OpenRecent",
-      "alt-cmd-b": "branches::OpenRecent",
+      // "alt-cmd-b": "branches::OpenRecent",
       "ctrl-~": "workspace::NewTerminal",
       "cmd-s": "workspace::Save",
       "cmd-k s": "workspace::SaveWithoutFormat",
@@ -451,7 +433,6 @@
       "cmd-shift-p": "command_palette::Toggle",
       "cmd-shift-m": "diagnostics::Deploy",
       "cmd-shift-e": "project_panel::ToggleFocus",
-      "cmd-?": "assistant::ToggleFocus",
       "cmd-alt-s": "workspace::SaveAll",
       "cmd-k m": "language_selector::Toggle",
       "escape": "workspace::Unfollow",
@@ -532,7 +513,7 @@
     "bindings": {
       "ctrl-alt-cmd-f": "workspace::FollowNextCollaborator",
       // TODO: Move this to a dock open action
-      "cmd-shift-c": "collab_panel::ToggleFocus",
+      // "cmd-shift-c": "collab_panel::ToggleFocus",
       "cmd-alt-i": "zed::DebugElements",
       "ctrl-:": "editor::ToggleInlayHints"
     }
@@ -543,8 +524,7 @@
       "alt-enter": "editor::OpenExcerpts",
       "cmd-k enter": "editor::OpenExcerptsSplit",
       "cmd-f8": "editor::GoToHunk",
-      "cmd-shift-f8": "editor::GoToPrevHunk",
-      "ctrl-enter": "assistant::InlineAssist"
+      "cmd-shift-f8": "editor::GoToPrevHunk"
     }
   },
   {
@@ -579,31 +559,6 @@
     "context": "ProjectPanel && not_editing",
     "bindings": {
       "space": "project_panel::Open"
-    }
-  },
-  {
-    "context": "CollabPanel && not_editing",
-    "bindings": {
-      "ctrl-backspace": "collab_panel::Remove",
-      "space": "menu::Confirm"
-    }
-  },
-  {
-    "context": "(CollabPanel && editing) > Editor",
-    "bindings": {
-      "space": "collab_panel::InsertSpace"
-    }
-  },
-  {
-    "context": "ChannelModal",
-    "bindings": {
-      "tab": "channel_modal::ToggleMode"
-    }
-  },
-  {
-    "context": "ChannelModal > Picker > Editor",
-    "bindings": {
-      "tab": "channel_modal::ToggleMode"
     }
   },
   {

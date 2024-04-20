@@ -18,13 +18,13 @@ path = "src/main.rs"
 activity_indicator.workspace = true
 anyhow.workspace = true
 assets.workspace = true
-assistant.workspace = true
+# assistant.workspace = true
 audio.workspace = true
 auto_update.workspace = true
 backtrace = "0.3"
 breadcrumbs.workspace = true
-call.workspace = true
-channel.workspace = true
+# call.workspace = true
+# channel.workspace = true
 chrono.workspace = true
 clap.workspace = true
 cli.workspace = true
@@ -62,7 +62,7 @@ markdown_preview.workspace = true
 menu.workspace = true
 mimalloc = "0.1"
 node_runtime.workspace = true
-notifications.workspace = true
+# notifications.workspace = true
 outline.workspace = true
 parking_lot.workspace = true
 profiling.workspace = true
@@ -88,7 +88,7 @@ theme_selector.workspace = true
 urlencoding = "2.1.2"
 util.workspace = true
 uuid.workspace = true
-vim.workspace = true
+# vim.workspace = true
 welcome.workspace = true
 workspace.workspace = true
 zed_actions.workspace = true
@@ -98,7 +98,7 @@ embed-manifest = "1.4.0"
 winresource = "0.1"
 
 [dev-dependencies]
-call = { workspace = true, features = ["test-support"] }
+# call = { workspace = true, features = ["test-support"] }
 editor = { workspace = true, features = ["test-support"] }
 gpui = { workspace = true, features = ["test-support"] }
 language = { workspace = true, features = ["test-support"] }

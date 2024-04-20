@@ -1,4 +1,4 @@
-use assistant::assistant_settings::AssistantSettings;
+// use assistant::assistant_settings::AssistantSettings;
 use assistant::{AssistantPanel, InlineAssist};
 use editor::{Editor, EditorSettings};
 
@@ -187,14 +187,7 @@ impl Render for QuickActionBar {
         h_flex()
             .id("quick action bar")
             .gap_3()
-            .child(
-                h_flex()
-                    .gap_1p5()
-                    .children(search_button)
-                    .when(AssistantSettings::get_global(cx).button, |bar| {
-                        bar.child(assistant_button)
-                    }),
-            )
+            .child(h_flex().gap_1p5().children(search_button))
             .child(editor_settings_dropdown)
             .when_some(
                 self.toggle_settings_menu.as_ref(),
