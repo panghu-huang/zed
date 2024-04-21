@@ -102,7 +102,6 @@ if [ "$local_arch" = true ]; then
     app_path=$(cargo bundle ${build_flag} --select-workspace-root | xargs)
 else
     app_path_x64=$(cargo bundle ${build_flag} --target x86_64-apple-darwin --select-workspace-root | xargs)
-    app_path_aarch64=$(cargo bundle ${build_flag} --target aarch64-apple-darwin --select-workspace-root | xargs)
     app_path=$app_path_x64
 fi
 
@@ -353,27 +352,34 @@ function sign_binaries() {
     fi
 }
 
+echo "Building Zed for macOS"
+
 if [ "$local_arch" = true ]; then
     sign_binaries "$app_path" "$local_target_triple" "$local_target_triple"
 else
-    # Create universal binary
-    prepare_binaries "aarch64-apple-darwin" "$app_path_aarch64"
     prepare_binaries "x86_64-apple-darwin" "$app_path_x64"
 
     cp -R "$app_path_x64" target/release/
     app_path=target/release/$(basename "$app_path_x64")
     lipo \
         -create \
-        target/{x86_64-apple-darwin,aarch64-apple-darwin}/${target_dir}/${binary_name} \
+        target/x86_64-apple-darwin/${target_dir}/${binary_name} \
         -output \
         "${app_path}/Contents/MacOS/${zed_crate}"
     lipo \
         -create \
-        target/{x86_64-apple-darwin,aarch64-apple-darwin}/${target_dir}/cli \
+        target/x86_64-apple-darwin/${target_dir}/cli \
         -output \
         "${app_path}/Contents/MacOS/cli"
-    sign_binaries "$app_path" "universal" "."
 
     sign_binaries "$app_path_x64" "x86_64-apple-darwin" "x86_64-apple-darwin"
-    sign_binaries "$app_path_aarch64" "aarch64-apple-darwin" "aarch64-apple-darwin"
 fi
+
+echo "Listing contents of target directory"
+ls target
+
+echo "Listing contents of target/x86_64-apple-darwin"
+ls target/x86_64-apple-darwin
+
+echo "Listing contents of target/x86_64-apple-darwin/release"
+ls target/x86_64-apple-darwin/release
