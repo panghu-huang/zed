@@ -251,41 +251,15 @@ impl PickerDelegate for RecentProjectsDelegate {
         {
             let (candidate_workspace_id, candidate_workspace_location) =
                 &self.workspaces[selected_match.candidate_id];
-            let replace_current_window = if self.create_new_window {
-                secondary
-            } else {
-                !secondary
-            };
+
             workspace
                 .update(cx, |workspace, cx| {
                     if workspace.database_id() == *candidate_workspace_id {
                         Task::ready(Ok(()))
                     } else {
                         let candidate_paths = candidate_workspace_location.paths().as_ref().clone();
-                        if replace_current_window {
-                            cx.spawn(move |workspace, mut cx| async move {
-                                let continue_replacing = workspace
-                                    .update(&mut cx, |workspace, cx| {
-                                        workspace.prepare_to_close(true, cx)
-                                    })?
-                                    .await?;
-                                if continue_replacing {
-                                    workspace
-                                        .update(&mut cx, |workspace, cx| {
-                                            workspace.open_workspace_for_paths(
-                                                true,
-                                                candidate_paths,
-                                                cx,
-                                            )
-                                        })?
-                                        .await
-                                } else {
-                                    Ok(())
-                                }
-                            })
-                        } else {
-                            workspace.open_workspace_for_paths(false, candidate_paths, cx)
-                        }
+
+                        workspace.open_workspace_for_paths(false, candidate_paths, cx)
                     }
                 })
                 .detach_and_log_err(cx);
