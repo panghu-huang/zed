@@ -40,6 +40,9 @@ jobs:
           clean: false
           submodules: "recursive"
 
+      - name: Cache
+        uses: Swatinem/rust-cache@v2
+
       - name: Limit target directory size
         run: script/clear-target-dir-if-larger-than 100
 
