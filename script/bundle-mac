@@ -357,21 +357,6 @@ echo "Building Zed for macOS"
 if [ "$local_arch" = true ]; then
     sign_binaries "$app_path" "$local_target_triple" "$local_target_triple"
 else
-    prepare_binaries "x86_64-apple-darwin" "$app_path_x64"
-
-    cp -R "$app_path_x64" target/release/
-    app_path=target/release/$(basename "$app_path_x64")
-    lipo \
-        -create \
-        target/x86_64-apple-darwin/${target_dir}/${binary_name} \
-        -output \
-        "${app_path}/Contents/MacOS/${zed_crate}"
-    lipo \
-        -create \
-        target/x86_64-apple-darwin/${target_dir}/cli \
-        -output \
-        "${app_path}/Contents/MacOS/cli"
-
     sign_binaries "$app_path_x64" "x86_64-apple-darwin" "x86_64-apple-darwin"
 fi
 
